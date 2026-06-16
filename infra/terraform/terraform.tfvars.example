@@ -1,0 +1,14 @@
+# Kubeconfig parameters
+kube_config_path = "~/.kube/config"
+
+# Namespace
+namespace_name = "healthcare-platform"
+
+# Database & Authentication Credentials
+db_password    = "postgres"
+jwt_secret     = "healthcare_secret_key_jwt_12345"
+encryption_key = "ab12cd34ef56gh78ij90kl12mn34op56"
+
+# Horizontal Pod Scaling Configurations
+backend_replicas  = 2
+frontend_replicas = 1
