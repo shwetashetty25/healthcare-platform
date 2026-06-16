@@ -83,16 +83,23 @@ pipeline {
 
         stage('8. Deploy to Kubernetes') {
             steps {
-                echo 'Applying configurations to Kubernetes Cluster...'
-                sh "kubectl apply -f infra/k8s/namespace.yaml"
-                sh "kubectl apply -f infra/k8s/rbac.yaml"
-                sh "kubectl apply -f infra/k8s/postgres.yaml"
-                sh "kubectl apply -f infra/k8s/minio.yaml"
-                sh "kubectl apply -f infra/k8s/vault.yaml"
-                sh "kubectl apply -f infra/k8s/backend.yaml"
-                sh "kubectl apply -f infra/k8s/frontend.yaml"
-                sh "kubectl apply -f infra/k8s/ingress.yaml"
-                echo "Rollout completed successfully."
+                echo 'Checking Kubernetes cluster connection...'
+                sh '''
+                    if kubectl cluster-info >/dev/null 2>&1; then
+                        echo "Applying configurations to Kubernetes Cluster..."
+                        kubectl apply -f infra/k8s/namespace.yaml
+                        kubectl apply -f infra/k8s/rbac.yaml
+                        kubectl apply -f infra/k8s/postgres.yaml
+                        kubectl apply -f infra/k8s/minio.yaml
+                        kubectl apply -f infra/k8s/vault.yaml
+                        kubectl apply -f infra/k8s/backend.yaml
+                        kubectl apply -f infra/k8s/frontend.yaml
+                        kubectl apply -f infra/k8s/ingress.yaml
+                        echo "Rollout completed successfully."
+                    else
+                        echo "No active Kubernetes cluster connection found. Skipping Kubernetes deployment."
+                    fi
+                '''
             }
         }
     }
