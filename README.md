@@ -177,11 +177,3 @@ Execute the disaster recovery script to capture a live SQL dump of the database 
 Navigate to MinIO Console -> Buckets -> `backups` to download or inspect the SQL dump files.
 
 ---
-
-## 11. Screenshots Section (Viva References Placeholder)
-*This section holds placeholders for screenshots to be added during deployment:*
-- `[Screenshot Placeholder: Login Panel showing 5 Role Quick-Login buttons]`
-- `[Screenshot Placeholder: Hospital Dashboard showing Decrypted Patient SSN and Legacy CSV parse]`
-- `[Screenshot Placeholder: Admin Console showing live Audit Logs and Database size]`
-- `[Screenshot Placeholder: Grafana Panel displaying Request Throughput]`
-- `[Screenshot Placeholder: MinIO Console displaying PostgreSQL backup files]`
