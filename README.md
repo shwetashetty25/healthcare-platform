@@ -1,6 +1,6 @@
 # National Healthcare Data Exchange Platform
 
-### A Cloud-Native Academic DevOps Project (B.Tech CSE Semester IV DevOps Case Study)
+### A Cloud-Native DevOps Project 
 
 ---
 
