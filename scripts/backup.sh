@@ -31,14 +31,16 @@ if ! docker exec -i ${POSTGRES_CONTAINER} pg_dump -U postgres healthcare_db > "$
 fi
 echo "[+] Successfully exported to local path: ${BACKUP_DIR}/${BACKUP_FILE}"
 
-# Step 2: Ensure backups bucket folder exists in MinIO container
-echo "2. Initializing target S3/MinIO bucket folder structure..."
-docker exec -i ${MINIO_CONTAINER} mkdir -p /data/backups
+# Step 2: Initialize target S3/MinIO alias and configuration
+echo "2. Initializing target S3/MinIO client alias..."
+docker exec -i ${MINIO_CONTAINER} mc alias set local http://localhost:9000 minioadmin minioadmin >/dev/null
 
 # Step 3: Stream/Upload backup to MinIO storage
 echo "3. Uploading database archive to MinIO bucket 'backups'..."
-if ! docker cp "${BACKUP_DIR}/${BACKUP_FILE}" "${MINIO_CONTAINER}:/data/backups/${BACKUP_FILE}"; then
-  echo "[-] ERROR: Failed to stream backup file to MinIO container."
+if ! docker cp "${BACKUP_DIR}/${BACKUP_FILE}" "${MINIO_CONTAINER}:/tmp/${BACKUP_FILE}" || \
+   ! docker exec -i ${MINIO_CONTAINER} mc cp "/tmp/${BACKUP_FILE}" "local/backups/${BACKUP_FILE}" || \
+   ! docker exec -i ${MINIO_CONTAINER} rm "/tmp/${BACKUP_FILE}"; then
+  echo "[-] ERROR: Failed to upload backup file to MinIO object storage."
   exit 1
 fi
 
