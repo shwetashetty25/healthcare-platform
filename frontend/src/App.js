@@ -35,6 +35,16 @@ function App() {
     }, 4000);
   };
 
+  // Auto-hide sync notice banner after 5 seconds
+  useEffect(() => {
+    if (syncNotice) {
+      const timer = setTimeout(() => {
+        setSyncNotice(null);
+      }, 5000);
+      return () => clearTimeout(timer);
+    }
+  }, [syncNotice]);
+
   // Socket Connection for Real-Time Synchronization
   useEffect(() => {
     socketRef.current = io(API_BASE_URL);
